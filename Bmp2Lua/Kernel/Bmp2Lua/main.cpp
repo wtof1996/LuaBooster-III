@@ -23,10 +23,13 @@
 #include <cstdlib>
 #include "draw.hpp"
 
+
+GlobalSettings Settings;
+
 int main(int argc, char *argv[])
 {
 
-    process_options(argc, argv);
+    draw::process_options(argc, argv, Settings);
 
     return EXIT_SUCCESS;
 }

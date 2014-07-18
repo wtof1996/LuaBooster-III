@@ -26,10 +26,33 @@
 #define ____DEBUG
 
 namespace option = boost::program_options;
+using MyString = std::string;
 
+class GlobalSettings
+{
+public:
+    void setValue(const option::variables_map &v);
+    bool getRaw() {return rawOutput;}
+    MyString getInPath() {return inPath;}
+    MyString getOutPath() {return outPath;}
+private:
+    MyString inPath;
+    MyString outPath;
+    bool rawOutput;
+};
+
+void GlobalSettings::setValue(const option::variables_map &v)
+{
+    inPath = v["input"].as<MyString>();
+    outPath = v["output"].as<MyString>();
+    rawOutput = !v.count("ti");
+}
+
+namespace draw{
+    using namespace std;
 void lic_info()
 {
-    std::cout <<
+    cout <<
 
     "Bmp2Lua Kernel V3\n"
     "\n"
@@ -49,19 +72,19 @@ void lic_info()
       "this software is based in part on the work of the Independent JPEG Group.\n"
       "this software is based in part on the libpng library.\n"
       "this software is based in part on the Boost library.\n"
-    << std::endl;
+    << endl;
 
 }
 
-void process_options(int argc, char *argv[])
+void process_options(int argc, char *argv[], GlobalSettings& s)
 {
     option::options_description desc("Usage");
 
     desc.add_options()
         ("help,h", "show this help message")
         ("license,l", "show the license")
-        ("input,i", option::value<std::string>(), "the path of the input image file, only accept png or jpeg file")
-        ("output,o", option::value<std::string>(), "the path of the result file")
+        ("input,i", option::value<MyString>(), "the path of the input image file, only accept png or jpeg file")
+        ("output,o", option::value<MyString>(), "the path of the result file")
         ("ti,t", "use the TI offcial output instead of the raw output")
     ;
     option::variables_map vm;
@@ -71,30 +94,33 @@ void process_options(int argc, char *argv[])
         option::notify(vm);
     }
     catch(option::error_with_option_name e){
-        std::cerr << e.what() << std::endl;
-        std::exit(EXIT_FAILURE);
+        cerr << e.what() << endl;
+        exit(EXIT_FAILURE);
     }
     catch(option::error e){
-        std::cerr << e.what() << std::endl;
-        std::exit(EXIT_FAILURE);
+        cerr << e.what() << endl;
+        exit(EXIT_FAILURE);
     }
 
     if(vm.count("help")) {
-        std::cout << desc << std::endl;
-        std::exit(EXIT_SUCCESS);
+        cout << desc << endl;
+        exit(EXIT_SUCCESS);
     }
     else if(vm.count("license")) {
         lic_info();
-        std::exit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS);
     }
     else if(vm.count("input") && vm.count("output")){
 #ifdef ____DEBUG
-        std::cout << "InputPath:" << vm["input"].as<std::string>() << std::endl;
-        std::cout << "OutputPath:" << vm["output"].as<std::string>() << std::endl;
+        cout << "InputPath:" << vm["input"].as<MyString>() << endl;
+        cout << "OutputPath:" << vm["output"].as<MyString>() << endl;
 #endif
+        s.setValue(vm);
     }
     else {
-        std::cout << "no input, terminated" << std::endl;
-        std::cout << "use --help option for help message" << std::endl;
+        cout << "no input, terminated" << endl;
+        cout << "use --help option for help message" << endl;
     }
 }
+};
+
