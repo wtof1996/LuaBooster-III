@@ -17,19 +17,15 @@
  *     this software is based in part on the libpng library.
  *     this software is based in part on the Boost library.
  */
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cstdlib>
+
 #include "draw.hpp"
+#include "io.hpp"
 
-
-GlobalSettings Settings;
 
 int main(int argc, char *argv[])
 {
 
-    draw::process_options(argc, argv, Settings);
+    draw::process_options(argc, argv);
 
     return EXIT_SUCCESS;
 }

@@ -38,6 +38,8 @@
 		</Compiler>
 		<Unit filename="draw.cpp" />
 		<Unit filename="draw.hpp" />
+		<Unit filename="io.cpp" />
+		<Unit filename="io.hpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

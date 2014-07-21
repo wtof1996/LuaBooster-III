@@ -22,37 +22,41 @@
 #include <boost/program_options/errors.hpp>
 #include <cstdlib>
 #include <string>
+#include <sstream>
+#include "io.hpp"
+#include "draw.hpp"
 
-#define ____DEBUG
+//#define ____DEBUG
 
 namespace option = boost::program_options;
 using MyString = std::string;
 
-class GlobalSettings
-{
-public:
-    void setValue(const option::variables_map &v);
-    bool getRaw() {return rawOutput;}
-    MyString getInPath() {return inPath;}
-    MyString getOutPath() {return outPath;}
-private:
-    MyString inPath;
-    MyString outPath;
-    bool rawOutput;
-};
 
-void GlobalSettings::setValue(const option::variables_map &v)
+void Settings::setValue(const option::variables_map &v)
 {
     inPath = v["input"].as<MyString>();
     outPath = v["output"].as<MyString>();
-    rawOutput = !v.count("ti");
+    rawOutput = v.count("raw");
+    if(v.count("resize")){
+        std::stringstream tmp;
+        tmp.str(v["resize"].as<MyString>());
+        char t;
+        tmp >> size.first >> t >> size.second;
+#ifdef ____DEBUG
+        io::notice(v["resize"].as<MyString>());
+#endif // ____DEBUG
+        if(t != '*'){
+            io::log("unrecongnised size value.");
+            std::exit(EXIT_FAILURE);
+        }
+    }
 }
 
 namespace draw{
     using namespace std;
 void lic_info()
 {
-    cout <<
+    io::notice(
 
     "Bmp2Lua Kernel V3\n"
     "\n"
@@ -72,11 +76,11 @@ void lic_info()
       "this software is based in part on the work of the Independent JPEG Group.\n"
       "this software is based in part on the libpng library.\n"
       "this software is based in part on the Boost library.\n"
-    << endl;
+    );
 
 }
 
-void process_options(int argc, char *argv[], GlobalSettings& s)
+void process_options(int argc, char *argv[])
 {
     option::options_description desc("Usage");
 
@@ -85,7 +89,8 @@ void process_options(int argc, char *argv[], GlobalSettings& s)
         ("license,l", "show the license")
         ("input,i", option::value<MyString>(), "the path of the input image file, only accept png or jpeg file")
         ("output,o", option::value<MyString>(), "the path of the result file")
-        ("ti,t", "use the TI offcial output instead of the raw output")
+        ("resize,r", option::value<MyString>(), "using bilinear resampling to scale the image.the size must be given by 'widthg*height', e.g 320*240")
+        ("raw,r", "use the raw output instead of the TI offcial output")
     ;
     option::variables_map vm;
 
@@ -94,16 +99,16 @@ void process_options(int argc, char *argv[], GlobalSettings& s)
         option::notify(vm);
     }
     catch(option::error_with_option_name e){
-        cerr << e.what() << endl;
+        io::log(e.what());
         exit(EXIT_FAILURE);
     }
     catch(option::error e){
-        cerr << e.what() << endl;
+        io::log(e.what());
         exit(EXIT_FAILURE);
     }
 
     if(vm.count("help")) {
-        cout << desc << endl;
+        io::notice(desc);
         exit(EXIT_SUCCESS);
     }
     else if(vm.count("license")) {
@@ -111,15 +116,22 @@ void process_options(int argc, char *argv[], GlobalSettings& s)
         exit(EXIT_SUCCESS);
     }
     else if(vm.count("input") && vm.count("output")){
+
+        Settings::get().setValue(vm);
 #ifdef ____DEBUG
-        cout << "InputPath:" << vm["input"].as<MyString>() << endl;
-        cout << "OutputPath:" << vm["output"].as<MyString>() << endl;
-#endif
-        s.setValue(vm);
+        using namespace io;
+        notice(Settings::get().getInPath());
+        notice(Settings::get().getOutPath());
+        notice(Settings::get().getRaw());
+        notice(Settings::get().getSize().first);
+        notice(Settings::get().getSize().second);
+
+#endif // ____DEBUG
     }
     else {
-        cout << "no input, terminated" << endl;
-        cout << "use --help option for help message" << endl;
+        io::log("no input path or output path, terminated");
+        io::log("use --help option for help message");
+        exit(EXIT_FAILURE);
     }
 }
 };
