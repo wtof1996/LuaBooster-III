@@ -1,15 +1,39 @@
+/*    Bmp2Lua Kernel V3
+ *
+ *    Copyright 2014 wtof1996
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ *
+ *     this software is based in part on the work of the Independent JPEG Group.
+ *     this software is based in part on the libpng library.
+ *     this software is based in part on the Boost library.
+ */
+
 #ifndef IO_HPP_INCLUDED
 #define IO_HPP_INCLUDED
 
 #include <iostream>
 #include <string>
 #include <vector>
+#include <bitset>
 #include <utility>
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
 #include <boost/gil/extension/numeric/sampler.hpp>
 #include <boost/gil/extension/numeric/resample.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include "draw.hpp"
 
 namespace io{
     using std::cout;
@@ -18,14 +42,15 @@ namespace io{
     using std::vector;
     using std::string;
     using std::bitset;
+    using namespace boost::gil;
 
     using MyString = std::string;
     using MySize = std::pair<unsigned int, unsigned int>;
     using MyByte = std::pair<unsigned char, unsigned char>;
 
     typedef boost::mpl::vector<
-            boost::gil::rgb8_image_t,
-            boost::gil::rgba8_image_t
+            rgb8_image_t,
+            rgba8_image_t
     > img_types;
 
     template<typename T>
@@ -38,26 +63,28 @@ namespace io{
     template<typename T>
     void log(const T &&i) { cerr << i << endl;}
 
-    MyByte RGB888_to_RGB555(const unsigned char r, const unsigned char g, const unsigned char b);
-
-    struct getRGB
+    template<typename T>
+    MyByte RGB888_to_RGB555(const T &p)
     {
-        typedef void result_type; // required
-        template <class View>
-        void operator()(const View& src) const {
-            boost::gil::gil_function_requires<boost::gil::ImageViewConcept<View>>();
 
-            auto w = src.width(), h = src.height();
+        string byte_seq("1");//The Highest bit must be 1
+        bitset<8> r(get_color(p, red_t()));
+        bitset<8> g(get_color(p, red_t()));
+        bitset<8> b(get_color(p, red_t()));
 
-            for(decltype(w) y = 0; y < h; ++y){
-                for(decltype(h) x = 0; x < w; ++x){
+        byte_seq += r.to_string().substr(0, 5);
+        byte_seq += g.to_string().substr(0, 5);
+        byte_seq += b.to_string().substr(0, 5);
 
-                }
-            }
+        //a byte has 8 bits
+        //split a RGB555 pixel into 2 bytes
+        bitset<8> low(byte_seq, 0, 8);
+        bitset<8> high(byte_seq, 8, 8);
 
-        }
-
-    };
+        return std::make_pair(static_cast<unsigned char>(low.to_ulong()),
+                            static_cast<unsigned char>(high.to_ulong())
+                            );
+    }
 
     class Image
     {
@@ -65,13 +92,16 @@ namespace io{
         void readImage();
         void convert();
         const vector<MyByte>& getData() { return data;}
+        Image() = default;
 
     private:
-        boost::gil::any_image<img_types> src;
+        any_image<img_types> src;
+        rgb8_image_t src_image;
+        rgb8_view_t src_view;
         vector<MyByte> data;
     };
 
 
-};
+};//io
 
 #endif // IO_HPP_INCLUDED

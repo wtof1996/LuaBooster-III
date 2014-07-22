@@ -18,6 +18,7 @@
  *     this software is based in part on the Boost library.
  */
 
+#include <cstdlib>
 #include "draw.hpp"
 #include "io.hpp"
 
@@ -26,6 +27,10 @@ int main(int argc, char *argv[])
 {
 
     draw::process_options(argc, argv);
+    draw::check_path();
+    io::Image img;
+    img.readImage();
+
 
     return EXIT_SUCCESS;
 }

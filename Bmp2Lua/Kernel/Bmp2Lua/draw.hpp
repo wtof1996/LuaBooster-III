@@ -23,6 +23,8 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <boost/program_options/errors.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <cstdlib>
 #include <string>
 #include <utility>
@@ -30,6 +32,7 @@
 namespace option = boost::program_options;
 using MyString = std::string;
 using MySize = std::pair<unsigned int, unsigned int>;
+namespace file = boost::filesystem;
 
 class Settings
 {
@@ -39,24 +42,28 @@ public:
         return s;
     }
     void setValue(const option::variables_map &v);
-    bool getRaw() {return rawOutput;}
-    MyString getInPath() {return inPath;}
-    MyString getOutPath() {return outPath;}
+    bool isRaw() {return rawOutput;}
+    bool isOverWrite() { return overWrite;}
+    bool isResize() { return resize;}
+    file::path getInPath() {return inPath;}
+    file::path getOutPath() {return outPath;}
     MySize getSize() {return size;}
 
 
 private:
-    Settings():inPath(""), outPath(""), rawOutput(false), size(0, 0) {} ;
-    MyString inPath;
-    MyString outPath;
+    Settings():inPath(""), outPath(""), rawOutput(false), overWrite(false), resize(false), size(0, 0)  {} ;
+    file::path inPath;
+    file::path outPath;
     bool rawOutput;
+    bool overWrite;
+    bool resize;
     MySize size;
 };
 
 
 namespace draw{
-    void lic_info();
     void process_options(int argc, char *argv[]);
+    void check_path();
 };
 
 #endif // DRAW_HPP_INCLUDED

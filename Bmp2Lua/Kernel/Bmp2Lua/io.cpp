@@ -26,32 +26,70 @@
 #include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
 #include <boost/gil/extension/numeric/sampler.hpp>
 #include <boost/gil/extension/numeric/resample.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include "draw.hpp"
 #include "io.hpp"
 
-io::MyByte io::RGB888_to_RGB555(const unsigned char r, const unsigned char g, const unsigned char b)
+
+namespace file = boost::filesystem;
+using namespace boost::gil;
+using boost::iequals;
+
+void io::Image::readImage()
 {
+    string ext = file::extension(Settings::get().getInPath());
 
-    string byte_seq("1");//The Highest bit must be 1
-    bitset<8> t_r(r);
-    bitset<8> t_g(g);
-    bitset<8> t_b(b);
+    if(iequals(ext, ".jpeg") || iequals(ext, ".jpg")){
+        try{
+            jpeg_read_image(Settings::get().getInPath().string(), src);
+        }
+        catch(std::ios_base::failure e){
+            log("Invalid JPEG file,please check the filename and try again.");
+            exit(EXIT_FAILURE);
+        }
 
-    byte_seq += t_r.to_string().substr(0, 5);
-    byte_seq += t_g.to_string().substr(0, 5);
-    byte_seq += t_b.to_string().substr(0, 5);
+    }
+    else if(iequals(ext, ".png")){
+        try{
+            png_read_image(Settings::get().getInPath().string(), src);
+        }
+        catch(std::ios_base::failure e){
+            log("Invalid PNG file,please check the filename and try again.");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else{
+        io::log("Invalid input file, please check the filename and try again.");
+        exit(EXIT_FAILURE);
+    }
+    rgb8_image_t img(src.width(), src.height());
+    copy_and_convert_pixels(view(src), view(img));
 
-    //a byte has 8 bits
-    //split a RGB555 pixel into 2 bytes
-    bitset<8> low(byte_seq, 0, 8);
-    bitset<8> high(byte_seq, 8, 8);
+    if(Settings::get().isResize()){
+        MySize s = Settings::get().getSize();
+        rgb8_image_t resize_img(s.first, s.second);
+        resize_view(view(img), view(resize_img), bilinear_sampler());
 
-    return std::make_pair(static_cast<unsigned char>(low.to_ulong()),
-                         static_cast<unsigned char>(high.to_ulong())
-                         );
+        src_image = resize_img;
+
+
+    }
+    else{
+        src_image = img;
+    }
+    src_view = view(src_image);
+
+
 }
 
 void io::Image::convert()
 {
-
+    auto w = src_view.width(), h = src_view.height();
+    for(decltype(h) y = 0; y < h; ++y){
+        for(decltype(w) x = 0; x < w; ++x){
+            data.push_back(io::RGB888_to_RGB555(src_view(x, y)));
+        }
+    }
 }
