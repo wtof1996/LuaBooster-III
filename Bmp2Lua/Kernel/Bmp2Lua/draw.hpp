@@ -21,13 +21,15 @@
 #define DRAW_HPP_INCLUDED
 
 #include <iostream>
+#include <cstdlib>
+#include <string>
+#include <utility>
+
 #include <boost/program_options.hpp>
 #include <boost/program_options/errors.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <cstdlib>
-#include <string>
-#include <utility>
+
 
 namespace option = boost::program_options;
 using MyString = std::string;

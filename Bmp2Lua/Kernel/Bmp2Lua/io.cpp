@@ -22,6 +22,9 @@
 #include <string>
 #include <vector>
 #include <bitset>
+#include <array>
+#include <cctype>
+
 #include <boost/gil/extension/io/png_dynamic_io.hpp>
 #include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
 #include <boost/gil/extension/numeric/sampler.hpp>
@@ -29,9 +32,12 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/format.hpp>
+
 #include "draw.hpp"
 #include "io.hpp"
 
+//#define INFO
 
 namespace file = boost::filesystem;
 using namespace boost::gil;
@@ -40,6 +46,8 @@ using boost::iequals;
 void io::Image::readImage()
 {
     string ext = file::extension(Settings::get().getInPath());
+
+    io::notice("Reading from:  " + Settings::get().getInPath().string());
 
     if(iequals(ext, ".jpeg") || iequals(ext, ".jpg")){
         try{
@@ -64,17 +72,30 @@ void io::Image::readImage()
         io::log("Invalid input file, please check the filename and try again.");
         exit(EXIT_FAILURE);
     }
+
+    io::notice("Complete.");
+    io::notice("Image Width:", false);
+    io::notice(src.width());
+    io::notice("Image Height:", false);
+    io::notice(src.height());
+
     rgb8_image_t img(src.width(), src.height());
     copy_and_convert_pixels(view(src), view(img));
 
     if(Settings::get().isResize()){
-        MySize s = Settings::get().getSize();
+        auto s = Settings::get().getSize();
+
+        io::notice("Resize Mode Enabled");
+        io::notice("Target Width:", false);
+        io::notice(s.first);
+        io::notice("Target Height:", false);
+        io::notice(s.second);
+
         rgb8_image_t resize_img(s.first, s.second);
         resize_view(view(img), view(resize_img), bilinear_sampler());
 
         src_image = resize_img;
-
-
+        io::notice("Resize complete.");
     }
     else{
         src_image = img;
@@ -86,10 +107,84 @@ void io::Image::readImage()
 
 void io::Image::convert()
 {
+    io::notice("Converting.........", false);
+
+    auto get_bits = [](const string &s, unsigned a, unsigned l){return bitset<8>(s, a, l);};
+    auto get_ulong_bits = [](const unsigned long l){return bitset<32>(l).to_string();};
+
+    //Make Header
+
     auto w = src_view.width(), h = src_view.height();
+    auto i = header.begin();
+    auto tmp_str = get_ulong_bits(w);
+    //4 bytes for width
+    for(int j = 3; j >= 0; --j){
+        *i++ = static_cast<unsigned char>(get_bits(tmp_str, j * 8, 8).to_ulong());
+    }
+    //4 bytes for height
+    tmp_str = get_ulong_bits(h);
+    for(int j = 3; j >= 0; --j){
+        *i++ = static_cast<unsigned char>(get_bits(tmp_str, j * 8, 8).to_ulong());
+    }
+
+    // Alignment, Flags, Pad
+    for(int j = 3; j >= 0; --j){
+        *i++ = 0;
+    }
+
+    //Raster
+    tmp_str = get_ulong_bits(w * 2);
+    for(int j = 3; j >= 0; --j){
+        *i++ = static_cast<unsigned char>(get_bits(tmp_str, j * 8, 8).to_ulong());
+    }
+
+    *i++ = 16;*i++ = 0;//Bits
+    *i++ = 1;*i++ = 0;//Plane
+    //Header End
+
+    //Make data
     for(decltype(h) y = 0; y < h; ++y){
         for(decltype(w) x = 0; x < w; ++x){
             data.push_back(io::RGB888_to_RGB555(src_view(x, y)));
         }
     }
+    //Data End
+
+    io::notice("OK");
+}
+
+void io::output(io::Image& img)
+{
+    auto outByte = [](const unsigned char &c){return (boost::format("\\%03d") % static_cast<int>(c)).str();};
+    auto outChar = [&outByte](const unsigned char &c){if(!std::isprint(c) || c == '"' || c == '\\') return outByte(c);
+                                                      else  return (boost::format("%c") % c).str();
+                                                     };
+    io::notice("Writing to:  " + Settings::get().getOutPath().string());
+    file::ofstream fout(Settings::get().getOutPath(), std::ios::out);
+    if(!fout){
+        io::log("Cannot open output file");
+        std::exit(EXIT_FAILURE);
+    }
+
+    fout << "\"";
+
+    auto h =  img.getHeader();
+    auto d = img.getData();
+
+    for(auto &i: h){
+        if(Settings::get().isRaw()) fout << outByte(i);
+        else                        fout << outChar(i);
+    }
+
+    for(auto &i: d){
+        if(Settings::get().isRaw()) fout << outByte(i.first) << outByte(i.second);
+        else                        fout << outChar(i.first) << outChar(i.second);
+    }
+
+    fout << "\"";
+
+    fout.close();
+    fout.clear();
+
+    io::notice("Complete.");
 }

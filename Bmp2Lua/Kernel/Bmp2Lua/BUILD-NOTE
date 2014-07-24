@@ -1,0 +1,36 @@
+Dear user,
+
+If you want to build this program by yourself, the following tips are useful.
+
+You need to link these libraries:
+
+* libpng
+* zlib(for libpng)
+* libjpeg
+
+And I suggest that these Boost libraries should be built first by b2 or bjam, in order to link:
+
+* Filesystem(of course you need system)
+* Program_options
+
+The numeric extension for GIL wasn't included in the Boost, so I attached one(it's extremely hard to find!)
+Copy the files in the "numeric.zip" under the "boost/gil/extension".
+
+Remember to add the following content to boost/gil/extension/io/png_io_private.hpp, or you will get a error like "¡®int_p_NULL¡¯ was not declared in this scope".
+
+#define png_infopp_NULL (png_infopp)NULL
+#define int_p_NULL (int*)NULL
+#define png_bytep_NULL (png_bytep)NULL
+
+and change 'png_set_gray_1_2_4_to_8(png_ptr)' to 'png_set_expand_gray_1_2_4_to_8(png_ptr)'
+
+(from http://code.google.com/p/gilviewer/issues/detail?id=8)
+
+This program used some C++11 features, so MAKE SURE your complier support C++11.
+
+The compliers I use were TDM-GCC 64 4.8.1 and TDM-GCC 32 4.8.1.The Boost I used version is 1.55.0.
+
+Altgough I write this program under windows 8.1 x64 , but I don't use anything rely on specific platform.
+
+Regards,
+wtof1996

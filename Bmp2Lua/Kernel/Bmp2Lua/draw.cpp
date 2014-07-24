@@ -18,11 +18,13 @@
  *     this software is based in part on the Boost library.
  */
 #include <iostream>
-#include <boost/program_options.hpp>
-#include <boost/program_options/errors.hpp>
 #include <cstdlib>
 #include <string>
 #include <sstream>
+
+#include <boost/program_options.hpp>
+#include <boost/program_options/errors.hpp>
+
 #include "io.hpp"
 #include "draw.hpp"
 
@@ -93,7 +95,7 @@ namespace draw{
             ("input,i", option::value<MyString>(), "the path of the input image file, only accept png or jpeg file")
             ("output,o", option::value<MyString>(), "the path of the result file")
             ("resize,r", option::value<MyString>(), "using bilinear resampling to scale the image.the size must be given by 'widthg*height', e.g 320*240")
-            ("raw,r", "use the raw output instead of the TI offcial output")
+            ("raw", "use the raw output instead of the TI offcial output")
             ("overwrite,w", "overwrite the output file if it exists")
         ;
         option::variables_map vm;

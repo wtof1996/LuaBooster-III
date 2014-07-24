@@ -1,49 +1,52 @@
 # depslib dependency file v1.0
-1406015682 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\draw.cpp
+1406171069 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\draw.cpp
 	<iostream>
-	<boost/program_options.hpp>
-	<boost/program_options/errors.hpp>
 	<cstdlib>
 	<string>
 	<sstream>
+	<boost/program_options.hpp>
+	<boost/program_options/errors.hpp>
 	"io.hpp"
 	"draw.hpp"
 
-1406018681 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\main.cpp
+1406192646 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\main.cpp
 	<cstdlib>
+	<ctime>
 	"draw.hpp"
 	"io.hpp"
 
-1406017897 d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\draw.hpp
+1406171080 d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\draw.hpp
 	<iostream>
+	<cstdlib>
+	<string>
+	<utility>
 	<boost/program_options.hpp>
 	<boost/program_options/errors.hpp>
 	<boost/filesystem.hpp>
 	<boost/filesystem/fstream.hpp>
-	<cstdlib>
-	<string>
-	<utility>
 
-1406018780 d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\io.hpp
+1406190673 d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\io.hpp
 	<iostream>
 	<string>
 	<vector>
 	<bitset>
 	<utility>
+	<array>
 	<boost/gil/extension/io/png_dynamic_io.hpp>
 	<boost/gil/extension/io/jpeg_dynamic_io.hpp>
 	<boost/gil/extension/numeric/sampler.hpp>
 	<boost/gil/extension/numeric/resample.hpp>
 	<boost/algorithm/string/predicate.hpp>
 	<boost/filesystem.hpp>
-	<boost/filesystem/fstream.hpp>
 	"draw.hpp"
 
-1406019008 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\io.cpp
+1406190496 source:d:\github\luabooster-iii\bmp2lua\kernel\bmp2lua\io.cpp
 	<iostream>
 	<string>
 	<vector>
 	<bitset>
+	<array>
+	<cctype>
 	<boost/gil/extension/io/png_dynamic_io.hpp>
 	<boost/gil/extension/io/jpeg_dynamic_io.hpp>
 	<boost/gil/extension/numeric/sampler.hpp>
@@ -51,6 +54,7 @@
 	<boost/algorithm/string/predicate.hpp>
 	<boost/filesystem.hpp>
 	<boost/filesystem/fstream.hpp>
+	<boost/format.hpp>
 	"draw.hpp"
 	"io.hpp"
 
