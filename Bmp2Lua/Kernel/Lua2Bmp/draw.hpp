@@ -21,8 +21,49 @@
 #ifndef DRAW_HPP_INCLUDED
 #define DRAW_HPP_INCLUDED
 
+
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <utility>
+
+#include <boost/program_options.hpp>
+#include <boost/program_options/errors.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+
+
+namespace option = boost::program_options;
+using MyString = std::string;
+namespace file = boost::filesystem;
+
+class Settings
+{
+public:
+    static Settings& get(){
+        static Settings s;
+        return s;
+    }
+    void setValue(const option::variables_map &v);
+
+    bool isOverWrite() { return overWrite;}
+    file::path getInPath() {return inPath;}
+    file::path getOutPath() {return outPath;}
+
+private:
+    Settings():inPath(""), outPath(""), overWrite(false){} ;
+    file::path inPath;
+    file::path outPath;
+    bool overWrite;
+
+};
+
+
 namespace draw
 {
+    void process_options(int argc, char *argv[]);
+    void check_path();
+
 
 };//draw
 

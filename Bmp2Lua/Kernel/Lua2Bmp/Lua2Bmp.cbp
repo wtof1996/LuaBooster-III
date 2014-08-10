@@ -16,6 +16,12 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="D:\Lib\boost\x64\lib\libboost_filesystem-mgw48-mt-s-1_55.a" />
+					<Add library="D:\Lib\boost\x64\lib\libboost_system-mgw48-mt-s-1_55.a" />
+					<Add library="D:\Lib\boost\x64\lib\libboost_program_options-mgw48-mt-s-1_55.a" />
+					<Add library="D:\Lib\libjpeg\x64\libjpeg.a" />
+					<Add library="D:\Lib\libpng\x64\libpng.a" />
+					<Add library="D:\Lib\zlib\x64\libz.a" />
 				</Linker>
 			</Target>
 			<Target title="x86">
@@ -28,11 +34,20 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="D:\Lib\boost\x86\lib\libboost_filesystem-mgw47-mt-s-1_55.a" />
+					<Add library="D:\Lib\boost\x86\lib\libboost_system-mgw47-mt-s-1_55.a" />
+					<Add library="D:\Lib\boost\x86\lib\libboost_program_options-mgw47-mt-s-1_55.a" />
+					<Add library="D:\Lib\libjpeg\x86\libjpeg.a" />
+					<Add library="D:\Lib\libpng\x86\libpng.a" />
+					<Add library="D:\Lib\zlib\x86\libz.a" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="D:/jpeg-9a" />
+			<Add directory="D:/lpng1612" />
+			<Add directory="D:/zlib-1.2.8" />
 		</Compiler>
 		<Unit filename="draw.cpp" />
 		<Unit filename="draw.hpp" />

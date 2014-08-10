@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1407672301 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\draw.cpp
+	"io.hpp"
+	"draw.hpp"
+
+1407132638 d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.hpp
+	<iostream>
+	<string>
+	<vector>
+	<bitset>
+	<utility>
+	<array>
+	<boost/gil/extension/io/png_dynamic_io.hpp>
+	<boost/gil/extension/io/jpeg_dynamic_io.hpp>
+	<boost/gil/extension/numeric/sampler.hpp>
+	<boost/gil/extension/numeric/resample.hpp>
+	<boost/algorithm/string/predicate.hpp>
+	<boost/filesystem.hpp>
+	"draw.hpp"
+
+1407672248 d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\draw.hpp
+	<iostream>
+	<cstdlib>
+	<string>
+	<utility>
+	<boost/program_options.hpp>
+	<boost/program_options/errors.hpp>
+	<boost/filesystem.hpp>
+	<boost/filesystem/fstream.hpp>
+
+1406302858 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.cpp
+	"io.hpp"
+	"draw.hpp"
+
+1407673073 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\main.cpp
+	<cstdlib>
+	"draw.hpp"
+	"io.hpp"
+

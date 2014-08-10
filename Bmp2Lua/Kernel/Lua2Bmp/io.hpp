@@ -21,9 +21,36 @@
 #ifndef IO_HPP_INCLUDED
 #define IO_HPP_INCLUDED
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <bitset>
+#include <utility>
+#include <array>
+
+#include <boost/gil/extension/io/png_dynamic_io.hpp>
+#include <boost/gil/extension/io/jpeg_dynamic_io.hpp>
+#include <boost/gil/extension/numeric/sampler.hpp>
+#include <boost/gil/extension/numeric/resample.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/filesystem.hpp>
+
+#include "draw.hpp"
+
 namespace io
 {
+    using std::cout;
+    using std::endl;
 
+    template<typename T>
+    void notice(const T &i, bool nl = true) { cout << i ;if(nl) cout << endl;}
+    template<typename T>
+    void notice(const T &&i, bool nl = true) { cout << i ;if(nl) cout << endl;}
+
+    template<typename T>
+    void log(const T &i, bool nl = true) { cout << i ;if(nl) cout << endl;}
+    template<typename T>
+    void log(const T &&i, bool nl = true) { cout << i ;if(nl) cout << endl;}
 
 };//io
 
