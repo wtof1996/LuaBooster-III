@@ -23,17 +23,25 @@
 #include "draw.hpp"
 #include "io.hpp"
 
-auto _VERSION = "V3.01 Alpha I Build 08102017";
+auto _VERSION = "V3.01 Alpha I Build 09041645";
 
 int main(int argc, char *argv[])
 {
     draw::process_options(argc, argv);
 
     io::notice("============================================");
-    io::notice("Bmp2Lua Kernel");
+    io::notice("Lua2Bmp Kernel");
     io::notice(_VERSION);
     io::notice("Copyright 2014 wtof1996");
     io::notice("Use '-l' or '--license' to show the license");
     io::notice("============================================");
+
+    draw::check_path();io::notice("Complete.");
+
+    io::Image img;
+    img.readLuaImage();
+    img.convert();
+    io::output(img);
+
     return EXIT_SUCCESS;
 }

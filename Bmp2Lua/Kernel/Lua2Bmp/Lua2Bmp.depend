@@ -3,7 +3,7 @@
 	"io.hpp"
 	"draw.hpp"
 
-1407132638 d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.hpp
+1409637521 d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.hpp
 	<iostream>
 	<string>
 	<vector>
@@ -28,11 +28,15 @@
 	<boost/filesystem.hpp>
 	<boost/filesystem/fstream.hpp>
 
-1406302858 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.cpp
+1410017894 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\io.cpp
 	"io.hpp"
 	"draw.hpp"
+	<boost/format.hpp>
+	<sstream>
+	<bitset>
+	<cctype>
 
-1407673073 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\main.cpp
+1410164721 source:d:\github\luabooster-iii\bmp2lua\kernel\lua2bmp\main.cpp
 	<cstdlib>
 	"draw.hpp"
 	"io.hpp"

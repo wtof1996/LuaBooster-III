@@ -109,7 +109,7 @@ void io::Image::convert()
 {
     io::notice("Converting.........", false);
 
-    auto get_bits = [](const string &s, unsigned a, unsigned l){return bitset<8>(s, a, l);};
+    auto get_bits = [](const string &s, unsigned pos, unsigned len){return bitset<8>(s, pos, len);};
     auto get_ulong_bits = [](const unsigned long l){return bitset<32>(l).to_string();};
 
     //Make Header

@@ -40,7 +40,20 @@
 namespace io
 {
     using std::cout;
+    using std::cerr;
     using std::endl;
+    using std::vector;
+    using std::string;
+    using std::bitset;
+    using namespace boost::gil;
+    namespace file = boost::filesystem;
+
+    using MyString = std::string;
+    using MySize = std::pair<unsigned int, unsigned int>;
+    using MyByte = std::pair<unsigned char, unsigned char>;
+    using MyHeader = std::array<unsigned char, 20>;
+    const int NIL = 0xfffff;
+
 
     template<typename T>
     void notice(const T &i, bool nl = true) { cout << i ;if(nl) cout << endl;}
@@ -51,6 +64,26 @@ namespace io
     void log(const T &i, bool nl = true) { cout << i ;if(nl) cout << endl;}
     template<typename T>
     void log(const T &&i, bool nl = true) { cout << i ;if(nl) cout << endl;}
+
+    rgb8_pixel_t RGB555_to_RGB888(const MyByte &p);
+    unsigned char getByte(file::ifstream &fin);
+
+    class Image
+    {
+    public:
+        void readLuaImage();
+        void convert();
+        rgb8_view_t& getView() {return src_view;}
+    private:
+        rgb8_image_t src;
+        rgb8_view_t src_view;
+        vector<MyByte> data;
+        MyHeader header;
+        MySize size;
+    };
+
+    void output(Image &img);
+
 
 };//io
 

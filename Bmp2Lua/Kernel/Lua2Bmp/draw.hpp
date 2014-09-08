@@ -21,7 +21,6 @@
 #ifndef DRAW_HPP_INCLUDED
 #define DRAW_HPP_INCLUDED
 
-
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -31,7 +30,6 @@
 #include <boost/program_options/errors.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-
 
 namespace option = boost::program_options;
 using MyString = std::string;
