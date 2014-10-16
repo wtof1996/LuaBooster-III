@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1413279909 source:d:\github\luabooster-iii\ilua\kernel\draw.cpp
+	"draw.hpp"
+	"io.hpp"
+
+1413279432 d:\github\luabooster-iii\ilua\kernel\draw.hpp
+	<iostream>
+	<cstdlib>
+	<string>
+	<utility>
+	<boost/program_options.hpp>
+	<boost/program_options/errors.hpp>
+	<boost/filesystem.hpp>
+	<boost/filesystem/fstream.hpp>
+
+1413275624 d:\github\luabooster-iii\ilua\kernel\io.hpp
+	<iostream>
+	<string>
+	<vector>
+	<bitset>
+	<utility>
+	<array>
+	<boost/algorithm/string/predicate.hpp>
+	<boost/filesystem.hpp>
+
+1413275484 source:d:\github\luabooster-iii\ilua\kernel\io.cpp
+
+1413278980 source:d:\github\luabooster-iii\ilua\kernel\main.cpp
+	<cstdlib>
+	"draw.hpp"
+
