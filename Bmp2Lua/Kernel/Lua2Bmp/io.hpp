@@ -18,8 +18,7 @@
  *     this software is based in part on the Boost library.
  */
 
-#ifndef IO_HPP_INCLUDED
-#define IO_HPP_INCLUDED
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -87,5 +86,3 @@ namespace io
 
 };//io
 
-
-#endif // IO_HPP_INCLUDED

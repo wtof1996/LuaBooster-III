@@ -18,8 +18,8 @@
  *     this software is based in part on the Boost library.
  */
 
-#ifndef DRAW_HPP_INCLUDED
-#define DRAW_HPP_INCLUDED
+#pragma once
+
 
 #include <iostream>
 #include <cstdlib>
@@ -49,21 +49,20 @@ public:
     file::path getOutPath() {return outPath;}
 
 private:
-    Settings():inPath(""), outPath(""), overWrite(false){} ;
-    file::path inPath;
-    file::path outPath;
-    bool overWrite;
+    Settings() = default;
+    file::path inPath = {""}; //Input file path
+    file::path outPath = {""};//Ouput file path
+    bool overWrite = false; //Force overwrite option
 
 };
 
 
 namespace draw
 {
+    using namespace std;
     void process_options(int argc, char *argv[]);
     void check_path();
 
 
 };//draw
 
-
-#endif // DRAW_HPP_INCLUDED

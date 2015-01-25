@@ -18,8 +18,7 @@
  *     this software is based in part on the Boost library.
  */
 
-#ifndef IO_HPP_INCLUDED
-#define IO_HPP_INCLUDED
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -37,7 +36,8 @@
 
 #include "draw.hpp"
 
-namespace io{
+namespace io
+{
     using std::cout;
     using std::cerr;
     using std::endl;
@@ -85,7 +85,7 @@ namespace io{
         bitset<8> high(byte_seq, 0, 8);
 
         return std::make_pair(static_cast<unsigned char>(low.to_ulong()),
-                            static_cast<unsigned char>(high.to_ulong())
+                              static_cast<unsigned char>(high.to_ulong())
                             );
     }
 
@@ -94,20 +94,21 @@ namespace io{
     public:
         void readImage();
         void convert();
+
         const vector<MyByte>& getData() { return data;}
         MyHeader& getHeader() {return header;}
         Image() = default;
+        ~Image() = default;
 
     private:
-        any_image<img_types> src;
-        rgb8_image_t src_image;
-        rgb8_view_t src_view;
-        vector<MyByte> data;
-        MyHeader header;
+        any_image<img_types> src; //Source image
+        rgb8_image_t src_image;   //rgb8 Image
+        rgb8_view_t src_view;     //rgb8 Image view
+        vector<MyByte> data;      //result data
+        MyHeader header;          //result file header
     };
 
     void output(Image& img);
 
 };//io
 
-#endif // IO_HPP_INCLUDED

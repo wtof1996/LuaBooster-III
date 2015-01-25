@@ -22,6 +22,7 @@
 #include "draw.hpp"
 
 #include <boost/format.hpp>
+#include <boost/progress.hpp>
 #include <sstream>
 #include <bitset>
 
@@ -32,6 +33,7 @@ using std::string;
 using std::bitset;
 using std::make_pair;
 using boost::iequals;
+using boost::progress_display;
 using namespace boost::gil;
 namespace file = boost::filesystem;
 
@@ -95,7 +97,7 @@ void io::output(Image &img)
             jpeg_write_view(Settings::get().getOutPath().string(), img.getView());
         }
         catch(std::ios_base::failure e){
-            io::log("Invalid JPEG file,please check the filename and try again.");
+            io::log("Failed to write the file,please check the filename and try again.");
             exit(EXIT_FAILURE);
         }
 
@@ -105,7 +107,7 @@ void io::output(Image &img)
             png_write_view(Settings::get().getOutPath().string(), img.getView());
         }
         catch(std::ios_base::failure e){
-            io::log("Invalid PNG file,please check the filename and try again.");
+            io::log("Failed to write the file,please check the filename and try again.");
             exit(EXIT_FAILURE);
         }
     }
@@ -114,7 +116,7 @@ void io::output(Image &img)
         exit(EXIT_FAILURE);
     }
 
-    io::notice("Complete.");
+    io::notice("Convert Complete.");
 }
 
 void io::Image::readLuaImage()
@@ -154,17 +156,18 @@ void io::Image::readLuaImage()
 
     ///READDATA
 
-    io::notice("Reading header......", false);
+    io::notice("Reading data......", false);
 
     auto w = size.first, h = size.second;
+    progress_display status(w * h);
+
     for(decltype(h) y = 0; y < h; ++y){
         for(decltype(w) x = 0; x < w; ++x){
             auto l = getByte(fin), h = getByte(fin);
             data.push_back(make_pair(h, l));
+            ++status;
         }
     }
-
-    io::notice("Complete.");
 
 }
 
@@ -177,14 +180,14 @@ void io::Image::convert()
 
     io::notice("Converting.........", false);
 
+    progress_display status(w * h);
     for(decltype(h) y = 0; y < h; ++y){
         for(decltype(w) x = 0; x < w; ++x){
             tmp_view(x, y) = io::RGB555_to_RGB888(*i++);
+            ++status;
         }
     }
 
     src = tmp_img;
     src_view = view(src);
-
-    io::notice("Complete.");
 }

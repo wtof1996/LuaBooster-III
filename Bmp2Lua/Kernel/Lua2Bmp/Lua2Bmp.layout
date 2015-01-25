@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="x64" />
-	<File name="io.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="draw.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2361" topLine="57" />
+			<Cursor1 position="1788" topLine="36" />
 		</Cursor>
 	</File>
-	<File name="draw.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="io.hpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1489" topLine="87" />
+			<Cursor1 position="2660" topLine="54" />
 		</Cursor>
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="draw.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="836" topLine="0" />
+			<Cursor1 position="2821" topLine="60" />
 		</Cursor>
 	</File>
-	<File name="draw.hpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="io.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="923" topLine="37" />
+			<Cursor1 position="5085" topLine="20" />
 		</Cursor>
 	</File>
-	<File name="io.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="main.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1000" topLine="20" />
+			<Cursor1 position="1477" topLine="17" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

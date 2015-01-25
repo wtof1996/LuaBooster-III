@@ -17,8 +17,9 @@
  *     this software is based in part on the libpng library.
  *     this software is based in part on the Boost library.
  */
-#ifndef DRAW_HPP_INCLUDED
-#define DRAW_HPP_INCLUDED
+
+#pragma once
+
 
 #include <iostream>
 #include <cstdlib>
@@ -44,28 +45,33 @@ public:
         return s;
     }
     void setValue(const option::variables_map &v);
-    bool isRaw() {return rawOutput;}
-    bool isOverWrite() { return overWrite;}
-    bool isResize() { return resize;}
-    file::path getInPath() {return inPath;}
-    file::path getOutPath() {return outPath;}
-    MySize getSize() {return size;}
+
+    bool isRaw()       { return rawOutput; }
+    bool isOverWrite() { return overWrite; }
+    bool isResize()    { return resize; }
+    file::path getInPath() { return inPath; }
+    file::path getOutPath() { return outPath; }
+    MySize getSize()   { return size; }
 
 
 private:
-    Settings():inPath(""), outPath(""), rawOutput(false), overWrite(false), resize(false), size(0, 0)  {} ;
-    file::path inPath;
-    file::path outPath;
-    bool rawOutput;
-    bool overWrite;
-    bool resize;
-    MySize size;
+    Settings() = default;
+
+    file::path inPath = {""}; //Path of input file
+    file::path outPath = {""}; //Path of output file
+
+    bool rawOutput = false;  //raw option
+    bool overWrite = false;  //force overwrite the output file option
+    bool resize = false;     //resize option
+    MySize size = {0, 0};   //target size if the resize option is enable
+
 };
 
 
-namespace draw{
+namespace draw
+{
+    using namespace std;
     void process_options(int argc, char *argv[]);
     void check_path();
 };
 
-#endif // DRAW_HPP_INCLUDED

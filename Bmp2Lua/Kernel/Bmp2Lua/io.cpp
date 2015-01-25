@@ -33,6 +33,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
+#include <boost/progress.hpp>
 
 #include "draw.hpp"
 #include "io.hpp"
@@ -42,6 +43,7 @@
 namespace file = boost::filesystem;
 using namespace boost::gil;
 using boost::iequals;
+using boost::progress_display;
 
 void io::Image::readImage()
 {
@@ -57,8 +59,8 @@ void io::Image::readImage()
             log("Invalid JPEG file,please check the filename and try again.");
             exit(EXIT_FAILURE);
         }
-
     }
+
     else if(iequals(ext, ".png")){
         try{
             png_read_image(Settings::get().getInPath().string(), src);
@@ -102,12 +104,11 @@ void io::Image::readImage()
     }
     src_view = view(src_image);
 
-
 }
 
 void io::Image::convert()
 {
-    io::notice("Converting.........", false);
+    io::notice("Converting......", false);
 
     auto get_bits = [](const string &s, unsigned pos, unsigned len){return bitset<8>(s, pos, len);};
     auto get_ulong_bits = [](const unsigned long l){return bitset<32>(l).to_string();};
@@ -142,24 +143,27 @@ void io::Image::convert()
     *i++ = 1;*i++ = 0;//Plane
     //Header End
 
+    progress_display status(h * w);
+
     //Make data
     for(decltype(h) y = 0; y < h; ++y){
         for(decltype(w) x = 0; x < w; ++x){
             data.push_back(io::RGB888_to_RGB555(src_view(x, y)));
+            ++status;
         }
     }
     //Data End
-
-    io::notice("OK");
 }
 
 void io::output(io::Image& img)
 {
+    //These two functions could produce specific format strings for output
     auto outByte = [](const unsigned char &c){return (boost::format("\\%03d") % static_cast<int>(c)).str();};
     auto outChar = [&outByte](const unsigned char &c){if(!std::isprint(c) || c == '"' || c == '\\') return outByte(c);
                                                       else  return (boost::format("%c") % c).str();
                                                      };
-    io::notice("Writing to:  " + Settings::get().getOutPath().string());
+
+    io::notice("Writing to:  " + Settings::get().getOutPath().string(), false);
     file::ofstream fout(Settings::get().getOutPath(), std::ios::out);
     if(!fout){
         io::log("Cannot open output file");
@@ -168,17 +172,19 @@ void io::output(io::Image& img)
 
     fout << "\"";
 
-    auto h =  img.getHeader();
-    auto d = img.getData();
+    auto h =  img.getHeader(); //Header
+    auto d = img.getData();    //Data
 
     for(auto &i: h){
         if(Settings::get().isRaw()) fout << outByte(i);
         else                        fout << outChar(i);
     }
 
+    progress_display status(d.size());
     for(auto &i: d){
         if(Settings::get().isRaw()) fout << outByte(i.first) << outByte(i.second);
         else                        fout << outChar(i.first) << outChar(i.second);
+        ++status;
     }
 
     fout << "\"";
@@ -186,5 +192,6 @@ void io::output(io::Image& img)
     fout.close();
     fout.clear();
 
-    io::notice("Complete.");
+    io::notice("Convert Complete!");
+
 }

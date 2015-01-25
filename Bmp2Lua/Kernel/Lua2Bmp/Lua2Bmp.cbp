@@ -16,9 +16,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="D:\Lib\boost\x64\lib\libboost_filesystem-mgw48-mt-s-1_55.a" />
-					<Add library="D:\Lib\boost\x64\lib\libboost_system-mgw48-mt-s-1_55.a" />
-					<Add library="D:\Lib\boost\x64\lib\libboost_program_options-mgw48-mt-s-1_55.a" />
+					<Add library="D:\Lib\Boost\x64\libboost_program_options-mgw49-mt-s-1_57.a" />
+					<Add library="D:\Lib\Boost\x64\libboost_filesystem-mgw49-mt-s-1_57.a" />
+					<Add library="D:\Lib\Boost\x64\libboost_system-mgw49-mt-s-1_57.a" />
 					<Add library="D:\Lib\libjpeg\x64\libjpeg.a" />
 					<Add library="D:\Lib\libpng\x64\libpng.a" />
 					<Add library="D:\Lib\zlib\x64\libz.a" />
@@ -30,14 +30,13 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-march=i686" />
 					<Add option="-O3" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="D:\Lib\boost\x86\lib\libboost_filesystem-mgw47-mt-s-1_55.a" />
-					<Add library="D:\Lib\boost\x86\lib\libboost_system-mgw47-mt-s-1_55.a" />
-					<Add library="D:\Lib\boost\x86\lib\libboost_program_options-mgw47-mt-s-1_55.a" />
+					<Add library="D:\Lib\Boost\x86\libboost_filesystem-mgw49-mt-s-1_57.a" />
+					<Add library="D:\Lib\Boost\x86\libboost_program_options-mgw49-mt-s-1_57.a" />
+					<Add library="D:\Lib\Boost\x86\libboost_system-mgw49-mt-s-1_57.a" />
 					<Add library="D:\Lib\libjpeg\x86\libjpeg.a" />
 					<Add library="D:\Lib\libpng\x86\libpng.a" />
 					<Add library="D:\Lib\zlib\x86\libz.a" />
@@ -50,12 +49,16 @@
 			<Add directory="D:/lpng1612" />
 			<Add directory="D:/zlib-1.2.8" />
 		</Compiler>
-		<Unit filename="draw.cpp" />
+		<Unit filename="draw.cpp">
+			<Option weight="100" />
+		</Unit>
 		<Unit filename="draw.hpp" />
-		<Unit filename="io.cpp" />
+		<Unit filename="io.cpp">
+			<Option weight="100" />
+		</Unit>
 		<Unit filename="io.hpp" />
 		<Unit filename="main.cpp">
-			<Option weight="0" />
+			<Option weight="100" />
 		</Unit>
 		<Extensions>
 			<code_completion />

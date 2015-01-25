@@ -19,12 +19,13 @@
  */
 
 #include <cstdlib>
-#include <ctime>
+
+#include <boost/progress.hpp>
 
 #include "draw.hpp"
 #include "io.hpp"
 
-auto _VERSION = "V3.01 Alpha I Build 07242056";
+auto _VERSION = "V3.02 Alpha I Build 01251848";
 
 int main(int argc, char *argv[])
 {
@@ -43,10 +44,15 @@ int main(int argc, char *argv[])
     draw::check_path();
 
     io::Image img;
+    boost::progress_timer t;
+
     img.readImage();
     img.convert();
 
     io::output(img);
+
+    io::notice("Elapsed time:", false);
+    //When progress_timer destruct it will show the time elapsed.
 
     return EXIT_SUCCESS;
 }
